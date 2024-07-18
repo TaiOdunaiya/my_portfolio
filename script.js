@@ -129,10 +129,10 @@ document.body.addEventListener('mouseleave', () => {
 // Main Button
 const mainBtns = document.querySelectorAll('.main-btn')
 
-mainBtns.forEach(btn => {
+mainBtns.forEach((btn) => {
     let ripple;
 
-    btn.addEventListener('mouseenter', e => {
+    btn.addEventListener('mouseenter', (e) => {
         const left = e.clientX - e.target.getBoundingClientRect().left;
         const top = e.clientY - e.target.getBoundingClientRect().top;
 
@@ -145,8 +145,8 @@ mainBtns.forEach(btn => {
 
     btn.addEventListener('mouseleave', () => {
         btn.removeChild(ripple);
-    })
-})
+    });
+});
 
 
 // End of Main Buttton
@@ -206,7 +206,7 @@ const progressBarFn = (bigImgWrapper) => {
     //End of Arrow Rotation
 };
 // Progress Bar Click
-progressBar.addEventListener("click", e => {
+progressBar.addEventListener("click", (e) => {
     e.preventDefault();
 
     if (!imageWrapper) {
@@ -322,16 +322,31 @@ projects.forEach((project, i) => {
 
 });
 
-// Project Button
+// Projects Button
 const section3 = document.querySelector('.section-3');
 const projectsBtn = document.querySelector('.projects-btn');
 const projectsBtnText = document.querySelector('.projects-btn span');
+const gotoBtn=document.querySelectorAll('.goto');
+const hiddenBtns = [];
+for (let index = 6; index < gotoBtn.length; index++) {
+    hiddenBtns.push(gotoBtn[index])
+
+    for (let i = 0; i < hiddenBtns.length; i++) {
+        hiddenBtns[i].style.display = "none";
+
+    }
+}
 let showHideBool = true;
 
 const showProjects = (project, i) => {
     setTimeout(() => {
         project.style.display = "flex";
         section3.scrollIntoView({ block: "end" });
+
+        for (let index = 0; index < hiddenBtns.length; index++) {
+            hiddenBtns[index].style.display = "flex";
+
+        }
     }, 600);
 
     setTimeout(() => {
@@ -342,17 +357,23 @@ const showProjects = (project, i) => {
 const hideProjects = (project, i) => {
     setTimeout(() => {
         project.style.display = "none";
+
+        for (let index = 0; index < hiddenBtns.length; index++) {
+            hiddenBtns[index].style.display = "none";
+        }
+
         section3.scrollIntoView({ block: "end" });
     }, 1200);
+
     setTimeout(() => {
         project.style.opacity = "0";
     }, i * 100);
-}
+};
 
-projectsBtn.addEventListener('click', (e) => {
+projectsBtn.addEventListener("click", (e) => {
     e.preventDefault();
 
-    projectsBtn.firstElementChild.nextElementSibling.classList.toggle("change")
+    projectsBtn.firstElementChild.nextElementSibling.classList.toggle("change");
 
     showHideBool
         ? (projectsBtnText.textContent = 'Show Less')
@@ -360,7 +381,7 @@ projectsBtn.addEventListener('click', (e) => {
 
     projects.forEach((project, i) => {
         i >= 6 && (showHideBool ? showProjects(project, i) :
-            hideProjects(project, i))
+            hideProjects(project, i));
 
     });
     showHideBool = !showHideBool;
