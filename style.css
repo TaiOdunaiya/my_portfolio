@@ -535,6 +535,16 @@ html {
     perspective: 20rem;
     transition: opacity .5s;
 }
+.project-title{
+    position: absolute;
+    color: #fff;
+    font-size: 2rem;
+    top: -2.5rem;
+    text-transform: uppercase;
+    width: 100%;
+    text-align: center;
+
+  }
 /* button for projets */
 .goto{
     position: relative;
