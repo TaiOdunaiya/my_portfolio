@@ -1,5 +1,9 @@
+# Netlify defaults to Node 18 without this; use 22+ for Agent Runners and current tooling
 [build]
   publish = "."
+
+[build.environment]
+  NODE_VERSION = "22"
 
 [[redirects]]
   from = "/*"
