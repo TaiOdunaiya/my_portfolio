@@ -795,7 +795,7 @@ body {
     font-weight: bold;
     color: #3a4454;
     position: absolute;
-    right: 0;
+    right: 2rem;
     pointer-events: none;
     transition: right .5s;
 }

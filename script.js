@@ -178,7 +178,11 @@ const progressBarFn = (bigImgWrapper) => {
 
 
 
-    const scrolledPortionDegree = (scrolledPortion / (pageHeight - pageViewportHeight)) * 360;
+    const scrolledPortionDegree = PortfolioUtils.scrollProgressDegrees(
+        scrolledPortion,
+        pageHeight,
+        pageViewportHeight
+    );
 
     halfCircles.forEach((el) => {
         el.style.transform = `rotate(${scrolledPortionDegree}deg)`;
@@ -194,7 +198,11 @@ const progressBarFn = (bigImgWrapper) => {
             el.style.opacity = "1";
         });
     }
-    scrollBool = scrolledPortion + pageViewportHeight === pageHeight;
+    scrollBool = PortfolioUtils.isScrolledToBottom(
+        scrolledPortion,
+        pageViewportHeight,
+        pageHeight
+    );
 
 
     //Arrow Rotation
@@ -399,7 +407,13 @@ document.querySelectorAll(".service-btn").forEach((service) => {
         const serviceText = service.nextElementSibling;
         serviceText.classList.toggle("change");
 
-        const rightPosition = serviceText.classList.contains("change") ? `calc(100% - ${getComputedStyle(service.firstElementChild).width})` : 0;
+        const titleInset = "4rem";
+        const w = getComputedStyle(service.firstElementChild).width;
+        const rightPosition = PortfolioUtils.serviceTitleRightPosition(
+            serviceText.classList.contains("change"),
+            w,
+            titleInset
+        );
 
         service.firstElementChild.style.right = rightPosition;
     });
@@ -475,14 +489,14 @@ const success = (input) => {
 
 const checkRequiredFields = (inputArr) => {
     inputArr.forEach((input) => {
-        if (input.value.trim() === "") {
+        if (!PortfolioUtils.isNonEmpty(input.value)) {
             error(input, `${input.id} is required`);
         }
     });
 };
 
 const checkLength = (input, min) => {
-    if (input.value.trim().length < min) {
+    if (!PortfolioUtils.hasMinLength(input.value, min)) {
         error(input, `${input.id} must be at least ${min} characters`);
     } else {
         success(input);
@@ -490,10 +504,7 @@ const checkLength = (input, min) => {
 };
 
 const checkEmail = (input) => {
-    const regEx =
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-    if (regEx.test(input.value.trim())) {
+    if (PortfolioUtils.isValidEmail(input.value)) {
         success(input);
     } else {
         error(input, "Email is not valid");
