@@ -414,6 +414,7 @@ body {
     background-size: 135%;
     background-clip: content-box;
     border: 1rem double #3a4454;
+    margin-left: -10rem;
 }
 
 .circle-4 {
