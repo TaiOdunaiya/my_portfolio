@@ -723,33 +723,34 @@ body {
 /* End Of Section 2 Main Button */
 /* End of Section 2 */
 
-/* Section 3 */
+/* Section 3 — symmetric horizontal padding so project grid lines up with centered CTAs above */
 .section-3 {
     position: relative;
     z-index: 1;
     width: 100%;
     height: 100%;
-    padding: 10rem 4rem 10rem 16rem;
+    padding: 10rem 7rem 10rem 7rem;
     margin-top: 10rem;
     isolation: isolate;
 }
 
-/* Vertical “My Work” above cards; gutter so grid doesn’t cover it */
+/* Vertical “My Work” in left margin (does not shift the grid center) */
 .section-3 > .section-heading {
+    left: 2.5rem;
     z-index: 5;
     pointer-events: none;
 }
 
-/* Projects — 3-column grid on wide screens */
+/* Projects — 3-column grid, slightly narrower than full width for better optical center */
 .projects.center {
     position: relative;
     z-index: 1;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    column-gap: 3rem;
-    row-gap: 10rem;
+    column-gap: 2.5rem;
+    row-gap: 9rem;
     width: 100%;
-    max-width: 160rem;
+    max-width: 128rem;
     margin: 0 auto;
     padding: 6rem 0 8rem;
     justify-items: stretch;
@@ -768,7 +769,7 @@ body {
 .project {
     width: 100%;
     max-width: none;
-    height: 45rem;
+    height: 40rem;
     overflow: hidden;
     margin: 0;
     flex-shrink: 0;
@@ -839,12 +840,16 @@ body {
 
 @media (max-width: 1300px) {
     .section-3 {
-        padding-left: 12rem;
-        padding-right: 3rem;
+        padding: 8rem 5rem 8rem 5rem;
+    }
+
+    .section-3 > .section-heading {
+        left: 2rem;
     }
 
     .projects.center {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+        max-width: 100rem;
         padding: 5rem 0 6rem;
         row-gap: 8rem;
     }
@@ -852,7 +857,11 @@ body {
 
 @media (max-width: 900px) {
     .section-3 {
-        padding-left: 8rem;
+        padding: 6rem 4rem 6rem 4rem;
+    }
+
+    .section-3 > .section-heading {
+        left: 1.5rem;
     }
 }
 
