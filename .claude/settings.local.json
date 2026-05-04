@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\Tai\\\\Desktop\\\\Development\\\\my_portfolio\" -Recurse -Force)",
+      "Bash(Select-Object FullName)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\Tai\\\\Desktop\\\\Development\\\\my_portfolio\" -Recurse -File)"
+    ]
+  }
+}
