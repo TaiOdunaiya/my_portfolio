@@ -319,7 +319,31 @@ document.querySelectorAll('.svc-title').forEach(title => {
 //Projects
 const container = document.querySelector('.container');
 const projects = document.querySelectorAll(".project");
-const projectHiddenBtn = document.querySelector(".project-hide-btn")
+const projectHiddenBtn = document.querySelector(".project-hide-btn");
+const projectHideBtnText = projectHiddenBtn && projectHiddenBtn.querySelector(".project-hide-btn-text");
+if (projectHideBtnText) {
+    const closeLabelOriginal = projectHideBtnText.textContent.trim();
+    let closeScrambleInterval;
+    projectHiddenBtn.addEventListener("mouseenter", () => {
+        let iterations = 0;
+        clearInterval(closeScrambleInterval);
+        closeScrambleInterval = setInterval(() => {
+            projectHideBtnText.textContent = closeLabelOriginal.split("").map((char, i) => {
+                if (i < iterations) return closeLabelOriginal[i];
+                return char === " " ? " " : scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
+            }).join("");
+            if (iterations >= closeLabelOriginal.length) {
+                clearInterval(closeScrambleInterval);
+                projectHideBtnText.textContent = closeLabelOriginal;
+            }
+            iterations += 0.5;
+        }, 40);
+    });
+    projectHiddenBtn.addEventListener("mouseleave", () => {
+        clearInterval(closeScrambleInterval);
+        projectHideBtnText.textContent = closeLabelOriginal;
+    });
+}
 
 projects.forEach((project, i) => {
     project.addEventListener('mouseenter', () => {
@@ -462,53 +486,31 @@ document.querySelectorAll(".service-btn").forEach((btn) => {
 
 // Section 5
 // Form
-const formHeading = document.querySelector(".form-heading");
+const formStatus = document.querySelector(".form-status");
 const formInputs = document.querySelectorAll(".contact-form-input");
 
 formInputs.forEach((input) => {
     input.addEventListener("focus", () => {
-        formHeading.style.opacity = "0";
-        setTimeout(() => {
-            formHeading.textContent = `Your ${input.placeholder}`;
-            formHeading.style.opacity = "1";
-        }, 300);
+        if (formStatus) formStatus.textContent = 'INPUT_FIELD: ' + input.id.toUpperCase();
     });
-
     input.addEventListener("blur", () => {
-        formHeading.style.opacity = "0";
-        setTimeout(() => {
-            formHeading.textContent = "Let's Talk";
-            formHeading.style.opacity = "1";
-        }, 300);
+        if (formStatus) formStatus.textContent = 'AWAITING_INPUT';
     });
 });
 // End of Form
 
-// Slideshow
-const slideshow = document.querySelector(".slideshow");
-
-setInterval(() => {
-    const firstIcon = slideshow.firstElementChild;
-
-    firstIcon.classList.add("faded-out");
-
-    const thirdIcon = slideshow.children[3];
-
-    thirdIcon.classList.add("light");
-
-    thirdIcon.previousElementSibling.classList.remove("light");
-
-    setTimeout(() => {
-        slideshow.removeChild(firstIcon);
-
-        slideshow.appendChild(firstIcon);
-
-        setTimeout(() => {
-            firstIcon.classList.remove("faded-out");
-        }, 500);
-    }, 500);
-}, 3000);
-// End of Slideshow
+// Social grid scanning animation
+const socialLinks = document.querySelectorAll('.social-link');
+let socialIdx = 0;
+if (socialLinks.length) {
+    socialLinks[0].classList.add('scanning');
+    setInterval(() => {
+        socialLinks[socialIdx].classList.remove('scanning');
+        socialIdx = (socialIdx + 1) % socialLinks.length;
+        socialLinks[socialIdx].classList.add('scanning');
+    }, 2200);
+}
+// End Social Grid
 
 // Form Validation
 const form = document.querySelector(".contact-form");
