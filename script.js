@@ -49,8 +49,6 @@ const mouseCircleFn = (x, y) => {
 };
 // end of mouse circle
 
-// Animated Circles — removed (replaced by CSS HUD animations)
-
 // Sticky Element
 let hoveredElPosition = [];
 
@@ -125,9 +123,7 @@ document.body.addEventListener("mousemove", (e) => {
 document.body.addEventListener('mouseleave', () => {
     mouseCircle.style.opacity = "0"
     mouseDot.style.opacity = "0"
-})
-
-// End of Main Button
+});
 
 // Progress Bar
 const sections = document.querySelectorAll("section")
@@ -153,9 +149,6 @@ const progressBarFn = (bigImgWrapper) => {
         pageHeight = imageWrapper.firstElementChild.scrollHeight;
         scrolledPortion = imageWrapper.scrollTop;
     }
-
-
-
 
     const scrolledPortionDegree = PortfolioUtils.scrollProgressDegrees(
         scrolledPortion,
@@ -206,8 +199,6 @@ progressBar.addEventListener("click", (e) => {
     } else {
         scrollBool ? imageWrapper.scrollTo(0, 0) : imageWrapper.scrollTo(0, imageWrapper.scrollHeight);
     }
-
-
 });
 // End of Progress Bar Click
 progressBarFn();
@@ -233,48 +224,24 @@ document.addEventListener('scroll', scrollFn);
 menuIcon.addEventListener('click', () => {
     menuIcon.classList.remove('show-menu-icon');
     navbar.classList.remove('hide-navbar');
-})
+});
 // End of Navigation
 
-// Scramble Text on Nav Hover
 const scrambleChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%';
-document.querySelectorAll('.navbar-link').forEach(link => {
-    const original = link.textContent.trim();
-    let scrambleInterval;
-    link.addEventListener('mouseenter', () => {
-        let iterations = 0;
-        clearInterval(scrambleInterval);
-        scrambleInterval = setInterval(() => {
-            link.textContent = original.split('').map((char, i) => {
-                if (i < iterations) return original[i];
-                return char === ' ' ? ' ' : scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
-            }).join('');
-            if (iterations >= original.length) {
-                clearInterval(scrambleInterval);
-                link.textContent = original;
-            }
-            iterations += 0.5;
-        }, 40);
-    });
-    link.addEventListener('mouseleave', () => {
-        clearInterval(scrambleInterval);
-        link.textContent = original;
-    });
-});
 
-// Scramble text on main-btn hover
-document.querySelectorAll('.main-btn').forEach(btn => {
-    const textEl = btn.querySelector('.btn-text');
-    if (!textEl) return;
+function attachScrambleHover(triggerEl, textEl, opts) {
+    opts = opts || {};
     const original = textEl.textContent.trim();
     let scrambleInterval;
-    btn.addEventListener('mouseenter', () => {
+    triggerEl.addEventListener('mouseenter', () => {
         let iterations = 0;
         clearInterval(scrambleInterval);
         scrambleInterval = setInterval(() => {
             textEl.textContent = original.split('').map((char, i) => {
                 if (i < iterations) return original[i];
-                return char === ' ' ? ' ' : scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
+                if (char === ' ') return ' ';
+                if (opts.preserveUnderscore && char === '_') return '_';
+                return scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
             }).join('');
             if (iterations >= original.length) {
                 clearInterval(scrambleInterval);
@@ -283,36 +250,20 @@ document.querySelectorAll('.main-btn').forEach(btn => {
             iterations += 0.5;
         }, 40);
     });
-    btn.addEventListener('mouseleave', () => {
+    triggerEl.addEventListener('mouseleave', () => {
         clearInterval(scrambleInterval);
         textEl.textContent = original;
     });
-});
+}
 
-// Scramble text on service title hover
-document.querySelectorAll('.svc-title').forEach(title => {
-    const original = title.textContent.trim();
-    let scrambleInterval;
+document.querySelectorAll('.navbar-link').forEach((link) => attachScrambleHover(link, link));
+document.querySelectorAll('.main-btn').forEach((btn) => {
+    const textEl = btn.querySelector('.btn-text');
+    if (textEl) attachScrambleHover(btn, textEl);
+});
+document.querySelectorAll('.svc-title').forEach((title) => {
     const btn = title.closest('.service-btn');
-    btn.addEventListener('mouseenter', () => {
-        let iterations = 0;
-        clearInterval(scrambleInterval);
-        scrambleInterval = setInterval(() => {
-            title.textContent = original.split('').map((char, i) => {
-                if (i < iterations) return original[i];
-                return char === '_' ? '_' : scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
-            }).join('');
-            if (iterations >= original.length) {
-                clearInterval(scrambleInterval);
-                title.textContent = original;
-            }
-            iterations += 0.5;
-        }, 40);
-    });
-    btn.addEventListener('mouseleave', () => {
-        clearInterval(scrambleInterval);
-        title.textContent = original;
-    });
+    if (btn) attachScrambleHover(btn, title, { preserveUnderscore: true });
 });
 // End of Scramble Text
 
@@ -322,27 +273,7 @@ const projects = document.querySelectorAll(".project");
 const projectHiddenBtn = document.querySelector(".project-hide-btn");
 const projectHideBtnText = projectHiddenBtn && projectHiddenBtn.querySelector(".project-hide-btn-text");
 if (projectHideBtnText) {
-    const closeLabelOriginal = projectHideBtnText.textContent.trim();
-    let closeScrambleInterval;
-    projectHiddenBtn.addEventListener("mouseenter", () => {
-        let iterations = 0;
-        clearInterval(closeScrambleInterval);
-        closeScrambleInterval = setInterval(() => {
-            projectHideBtnText.textContent = closeLabelOriginal.split("").map((char, i) => {
-                if (i < iterations) return closeLabelOriginal[i];
-                return char === " " ? " " : scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
-            }).join("");
-            if (iterations >= closeLabelOriginal.length) {
-                clearInterval(closeScrambleInterval);
-                projectHideBtnText.textContent = closeLabelOriginal;
-            }
-            iterations += 0.5;
-        }, 40);
-    });
-    projectHiddenBtn.addEventListener("mouseleave", () => {
-        clearInterval(closeScrambleInterval);
-        projectHideBtnText.textContent = closeLabelOriginal;
-    });
+    attachScrambleHover(projectHiddenBtn, projectHideBtnText);
 }
 
 projects.forEach((project, i) => {
@@ -381,7 +312,7 @@ projects.forEach((project, i) => {
 
         projectHiddenBtn.onclick = () => {
             projectHiddenBtn.classList.remove("change");
-            bigImgWrapper.remove()
+            bigImgWrapper.remove();
             document.body.style.overflowY = "scroll";
 
             document.addEventListener("scroll", scrollFn);
@@ -399,16 +330,11 @@ projects.forEach((project, i) => {
 const section3 = document.querySelector('.section-3');
 const projectsBtn = document.querySelector('.projects-btn');
 const projectsBtnText = document.querySelector('.projects-btn-text');
-const gotoBtn=document.querySelectorAll('.goto');
-const hiddenBtns = [];
-for (let index = 6; index < gotoBtn.length; index++) {
-    hiddenBtns.push(gotoBtn[index])
-
-    for (let i = 0; i < hiddenBtns.length; i++) {
-        hiddenBtns[i].style.display = "none";
-
-    }
-}
+const gotoBtn = document.querySelectorAll('.goto');
+const hiddenBtns = Array.from(gotoBtn).slice(6);
+hiddenBtns.forEach((el) => {
+    el.style.display = 'none';
+});
 let showHideBool = true;
 
 const showProjects = (project, i) => {

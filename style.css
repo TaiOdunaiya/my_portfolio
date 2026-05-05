@@ -1590,8 +1590,9 @@ body {
 
 /* Mobile readability + blend fixes when background / viewport behave oddly */
 @media (max-width: 768px) {
+    /* Vertical section titles clash with narrow layout; rely on in-section copy instead */
     .section-heading {
-        text-shadow: 0 0.1rem 0.5rem rgba(0, 0, 0, 0.9);
+        display: none;
     }
 
     .featured-text {
